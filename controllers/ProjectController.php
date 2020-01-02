@@ -36,14 +36,80 @@ class ProjectController extends Controller
             ],
         ]);
     }
-    public function handleSidebarItems()
+
+    public function handleSidebarItems($event)
+    {/*{{{*/
+        $items = Yii::$app->sidebarItems->getItems();
+
+
+            $items[] = $this->getSystemItems();
+        //  $items[] = $this->getDeveloperItems();
+
+
+        Yii::$app->sidebarItems->setItems($items);
+
+    }/*}}}*/
+
+    public function getSystemItems()
+    {/*{{{*/
+        return [
+            'label' => '<span class="fa fa-gear (alias)"></span> 系统设置',
+            'items' =>[
+                [
+                    'label' => '微博帐号',
+                    'url' => ['/weiboc/account/index'],
+                ],
+                [
+                    'label' => '转发率邮件提醒',
+                    'url' => ['/weiboc/option/forward-reminder'],
+                ],
+                [
+                    'label' => '微博私信',
+                    'url' => ['/weiboc/weibo-im/manage'],
+                ],
+                [
+                    'label' => '评论管理',
+                    'url' => ['/weiboc/weibo-comment/manage'],
+                ],
+            ],
+            'options' => [
+                'class' => SidebarActiveWidget::widget([
+                    'activeArr' => [
+                        'account', 'cookie', 'category', 'author', 'option','weibo-im', 'weibo-comment'
+                    ],
+                    'activeControllerArr' => [
+                        'weiboc',
+                    ],
+                ]),
+            ],
+        ];
+    }/*}}}*/
+    public function handleSidebarItems1()
     {
 
 
         $items = SidebarItems::getItems();
         $items[] = [
             'label' => '<span class="fa fa-file-code-o"></span> 公益项目 ',
-            'url' => '/project/index',
+            'items' =>[
+                [
+                    'label' => '微博帐号',
+                    'url' => ['/weiboc/account/index'],
+                ],
+                [
+                    'label' => '转发率邮件提醒',
+                    'url' => ['/weiboc/option/forward-reminder'],
+                ],
+                [
+                    'label' => '微博私信',
+                    'url' => ['/weiboc/weibo-im/manage'],
+                ],
+                [
+                    'label' => '评论管理',
+                    'url' => ['/weiboc/weibo-comment/manage'],
+                ],
+            ],
+//            'url' => '/project/index',
             'options' => [
                 'class' => SidebarActiveWidget::widget([
                     'activeArr' => ['account-exam'],

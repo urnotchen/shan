@@ -34,7 +34,7 @@ use yii\helpers\Html;
 
             $items[] = [
                 'text' => '管理员',
-                'url' => ['/admin/index'],
+                'url' => ['/base-user/index'],
                 'activeModule' => 'admin',
             ];
             $items[] = [

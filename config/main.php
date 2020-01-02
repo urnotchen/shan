@@ -1,7 +1,8 @@
 <?php
 $params = array_merge(
     require(__DIR__ . '/params.php'),
-    require(__DIR__ . '/params-local.php')
+    require(__DIR__ . '/params-local.php'),
+    require(__DIR__ . '/main-local.php')
 );
 
 return [
@@ -32,6 +33,7 @@ return [
         'db' => require(__DIR__ . '/db.php'),
         'request' => [
             'csrfParam' => '_csrf',
+            'enableCsrfValidation' => false,
             'parsers' => [
                 'application/json' => 'yii\web\JsonParser',
                 'text/json' => 'yii\web\JsonParser',
@@ -104,7 +106,7 @@ return [
             'class'           => 'app\components\User',
             'identityClass'   => 'app\models\BaseUser',
             'enableAutoLogin' => true,
-            'loginUrl'        => ['site/login'],
+            'loginUrl'        => APP_DOMAIN_SCHEMA. APP_BASE_DOMAIN . '/site/login',
             'identityCookie'  => [
                 'name'     => '_identity',
                 'httpOnly' => true,

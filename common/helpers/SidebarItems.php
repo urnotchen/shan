@@ -5,7 +5,7 @@ namespace app\common\helpers;
 use Faker\Provider\Base;
 use Yii;
 use yii\base\BaseObject;
-use yii\base\Object;
+
 use yii\helpers\Url;
 use yii\helpers\Html;
 

@@ -12,14 +12,11 @@ use yii\helpers\Html;
             'content' => $content
         ]);exit();
     }else{
-
         if ( Yii::$app->getUser()->isGuest) {
 
-            header("location:" . Yii::$app->user->loginUrl);
-            exit;
-        }
-    }
+            return Yii::$app->controller->redirect("location:".Yii::$app->user->loginUrl);
 
+        }
         \app\assets\AppAsset::register($this);
 
         \dmstr\web\AdminLteAsset::register($this);
@@ -27,6 +24,11 @@ use yii\helpers\Html;
         $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@bower/admin-lte/dist');
 
         $userIdentity = Yii::$app->getUser()->identity;
+
+
+    }
+
+
 
         ?>
 
