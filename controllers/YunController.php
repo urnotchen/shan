@@ -163,7 +163,7 @@ class YunController extends Controller
         $this->layout = 'main1';
         return $this->render('show_certificate',[
 
-            'src' => '/img/test'.'.jpg',
+            'src' => '/img/yunshi/'.$token.'.jpg',
 
 
             'share_title' => $share_title,
