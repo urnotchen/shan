@@ -26,10 +26,11 @@ class YunController extends Controller
 
     public function actionTest(){
     if(array_key_exists("HTTP_REFERER",$_SERVER)){
-        if(strpos($_SERVER["HTTP_REFERER"],'indexx')){
+        if(strpos($_SERVER["HTTP_REFERER"],'indexx')||(strpos($_SERVER["HTTP_REFERER"],'noval'))){
             header("Location:https://mp.weixin.qq.com/s/6l6BbNqeK0rosGjuo_C8Ew");
         }
     }
+    echo 1;
     return $this->redirect('indexx');
 
 }
@@ -38,6 +39,11 @@ class YunController extends Controller
         header("Location:https://mp.weixin.qq.com/s/6l6BbNqeK0rosGjuo_C8Ew");
 
     }
+    public function actionNovel(){
+        header("Location:https://mp.weixin.qq.com/s/6l6BbNqeK0rosGjuo_C8Ew");
+        exit();
+    }
+
 
 
 
