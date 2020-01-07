@@ -15,9 +15,10 @@
     }
 </style>
 
-
+<div>
 <img usemap="#Map" border="20px" src=<?php echo $src;?> style='display: block; height: auto;max-width: 100%;'>
-
+<a  href="indexx"><button style="width: 100%;margin-top: 2px;" class="btn-danger btn btn-lg">重新测试</button></a>
+</div>
 <?php
 $this->registerJs(<<<JS
     history.pushState(null,null,window.location.href);
