@@ -8,9 +8,15 @@
         display: table-cell;
         vertical-align: middle;
     }
+    #mapBorder {
+        position: absolute;
+        border: 2px solid red;
+        display: none;
+    }
 </style>
 
-<img src=<?php echo $src;?> style='display: block; height: auto;max-width: 100%;'>
+
+<img usemap="#Map" border="20px" src=<?php echo $src;?> style='display: block; height: auto;max-width: 100%;'>
 
 <?php
 $this->registerJs(<<<JS
@@ -52,5 +58,7 @@ $("#share").on('click',share);
 function share(){
 
 }
+
+
 JS
 );

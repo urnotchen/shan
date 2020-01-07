@@ -44,17 +44,84 @@ class YunController extends Controller
         exit();
     }
 
+    function actionImage($avatar,$openid) {
 
+//        $content = file_get_contents($avatar);
+//
+//        file_put_contents('@webroot/avatar/'.$openid.'.jpg', $content);
+
+
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_POST, 0);
+
+        curl_setopt($ch,CURLOPT_URL,$avatar);
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+        $file_content = curl_exec($ch);
+
+        curl_close($ch);
+
+        $downloaded_file = fopen("avatar/".$openid.'.jpg', 'w');
+
+        fwrite($downloaded_file, $file_content);
+
+        fclose($downloaded_file);
+
+
+
+        $imgpath = Yii::getAlias('@webroot/avatar/'.$openid.'.jpg');
+
+        $ext     = pathinfo($imgpath);
+        $src_img = null;
+        switch ($ext['extension']) {
+            case 'jpg':
+                $src_img = imagecreatefromjpeg($imgpath);
+                break;
+            case 'png':
+                $src_img = imagecreatefrompng($imgpath);
+                break;
+        }
+        $wh  = getimagesize($imgpath);
+        $w   = $wh[0];
+        $h   = $wh[1];
+        $w   = min($w, $h);
+        $h   = $w;
+        $img = imagecreatetruecolor($w, $h);
+        //这一句一定要有
+        imagesavealpha($img, true);
+        //拾取一个完全透明的颜色,最后一个参数127为全透明
+        $bg = imagecolorallocatealpha($img, 255, 255, 255, 127);
+        imagefill($img, 0, 0, $bg);
+        $r   = $w / 2; //圆半径
+        $y_x = $r; //圆心X坐标
+        $y_y = $r; //圆心Y坐标
+        for ($x = 0; $x < $w; $x++) {
+            for ($y = 0; $y < $h; $y++) {
+                $rgbColor = imagecolorat($src_img, $x, $y);
+                if (((($x - $r) * ($x - $r) + ($y - $r) * ($y - $r)) < ($r * $r))) {
+                    imagesetpixel($img, $x, $y, $rgbColor);
+                }
+            }
+        }
+
+        imagepng($img,"avatar/".$openid.'.jpg');
+    }
 
 
 //    public function generateCertificate(){
-    public function actionIndexx($token = null){
+
+
+    public function actionIndexx($token = null,$avatar = null){
 
         if(!$token){
-            $this->redirect('/wx/premit-wx');
+            return $this->redirect('/wx/premit-wx');
+
         }
         $this->layout= 'main1';
-
+        $this->actionImage($avatar,$token);
         //获取基本access_token签名
         $access_token = Curl::httpGet("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".self::APP_ID."&secret=".self::APP_SECRET,true);
         $access_token = json_decode($access_token,true);
@@ -78,6 +145,7 @@ class YunController extends Controller
 
 
         $img = Yii::getAlias('@webroot/img/bg.jpg');
+        $img = Image::watermark($img, '@webroot/avatar/'.$token.'.jpg', [250,280]);
 
         $goods = ['鼓鼓的钱包','美满的爱情','健康的身体','有趣的生活','洒脱人生','事业高升','家人团聚','完美身材','智商upup'];
         $bads =  ['夜宵','脂肪','脱发的烦恼','不开心的事','多愁善感','不值得的人','渣男渣女','勾心斗角','生病'];
@@ -90,6 +158,7 @@ class YunController extends Controller
             $j = rand(0,8);
             $img = Image::text($img, $bads[$j], $fontFile, [350, 540 + $i * 50], $textOpt);
         }
+
         $img->save(Yii::getAlias('@webroot/img/test'.'.jpg'), ['quality' => 100]);
         $this->layout = 'main1';
         return $this->render('show_certificate',[

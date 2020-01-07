@@ -19,7 +19,7 @@
     <input type="hidden" id="jsapi_ticket" value=<?php echo $jsapi_ticket?> />
     <input type="hidden" id="url" value=<?php echo $url?> />
 </form>
-<img src=<?php echo $src;?> style='display: block; height: auto;max-width: 100%;'>
+<img  src=<?php echo $src;?> style='display: block; height: auto;max-width: 100%;'>
 
 <?php
 $this->registerJs(<<<JS

@@ -42,10 +42,12 @@ class WxController extends Controller
         //拉取下用户信息
         $userinfo = Curl::httpGet("https://api.weixin.qq.com/sns/userinfo?access_token={$json['access_token']}&openid={$json['openid']}&lang=zh_CN", true);
         //保存token
+        $avatar = null;
         $transaction = \Yii::$app->db->beginTransaction();
         try {
             if ($userinfo) {
                 $userinfo = json_decode($userinfo, true);
+                $avatar = $userinfo['headimgurl'];
                 $user = User::updateUser($json['openid'], $json['access_token'], $json['expires_in'], $json['refresh_token'],$userinfo);
             } else {
                 $user = User::updateUser($json['openid'], $json['access_token'], $json['expires_in'], $json['refresh_token']);
@@ -60,7 +62,7 @@ class WxController extends Controller
 //            throw new HttpException(403,'数据库错误',ResponseCode::DATABASE_SAVE_FAILED);
         }
         //返回open_id,直接跳转到首页
-        $this->redirect(['yun/indexx?token='.$json['openid']]);
+        $this->redirect(['yun/indexx?token='.$json['openid']].'&avatar='.$avatar);
 //        $this->redirect(['index/project?id=3&token='.$json['openid']]);
     }
 
