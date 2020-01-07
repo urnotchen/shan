@@ -64,7 +64,7 @@ class YunController extends Controller
 
         curl_close($ch);
 
-        $downloaded_file = fopen("avatar/".$openid.'.jpg', 'w');
+        $downloaded_file = fopen("img/avatar/".$openid.'.jpg', 'w');
 
         fwrite($downloaded_file, $file_content);
 
@@ -72,7 +72,7 @@ class YunController extends Controller
 
 
 
-        $imgpath = Yii::getAlias('@webroot/avatar/'.$openid.'.jpg');
+        $imgpath = Yii::getAlias('@webroot/img/avatar/'.$openid.'.jpg');
 
         $ext     = pathinfo($imgpath);
         $src_img = null;
@@ -107,7 +107,7 @@ class YunController extends Controller
             }
         }
 
-        imagepng($img,"avatar/".$openid.'.jpg');
+        imagepng($img,"img/avatar/".$openid.'.jpg');
     }
 
 
@@ -145,7 +145,7 @@ class YunController extends Controller
 
 
         $img = Yii::getAlias('@webroot/img/bg.jpg');
-        $img = Image::watermark($img, '@webroot/avatar/'.$token.'.jpg', [250,280]);
+        $img = Image::watermark($img, '@webroot/img/avatar/'.$token.'.jpg', [250,280]);
 
         $goods = ['鼓鼓的钱包','美满的爱情','健康的身体','有趣的生活','洒脱人生','事业高升','家人团聚','完美身材','智商upup'];
         $bads =  ['夜宵','脂肪','脱发的烦恼','不开心的事','多愁善感','不值得的人','渣男渣女','勾心斗角','生病'];
@@ -159,7 +159,7 @@ class YunController extends Controller
             $img = Image::text($img, $bads[$j], $fontFile, [350, 540 + $i * 50], $textOpt);
         }
 
-        $img->save(Yii::getAlias('@webroot/img/test'.'.jpg'), ['quality' => 100]);
+        $img->save(Yii::getAlias('@webroot/img/yunshi/'.$token.'.jpg'), ['quality' => 100]);
         $this->layout = 'main1';
         return $this->render('show_certificate',[
 

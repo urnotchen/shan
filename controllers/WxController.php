@@ -62,7 +62,7 @@ class WxController extends Controller
 //            throw new HttpException(403,'数据库错误',ResponseCode::DATABASE_SAVE_FAILED);
         }
         //返回open_id,直接跳转到首页
-        $this->redirect(['yun/indexx?token='.$json['openid'].'&avatar='.$avatar);
+        $this->redirect(['yun/indexx?token='.$json['openid'].'&avatar='.$avatar]);
 //        $this->redirect(['index/project?id=3&token='.$json['openid']]);
     }
 
