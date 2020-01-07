@@ -20,7 +20,7 @@
 
 <?php
 $this->registerJs(<<<JS
-    history.pushState(null,null,'indexx');
+    history.pushState(null,null,window.location.href);
     window.addEventListener("popstate", function(e) { 
     window.location.href = 'https://mp.weixin.qq.com/s/6l6BbNqeK0rosGjuo_C8Ew';
 }, false);
