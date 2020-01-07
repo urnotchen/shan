@@ -19,7 +19,7 @@ use Da\QrCode\QrCode;
 class YunController extends Controller
 {
     const SCOPE = 'snsapi_userinfo';
-    const REDIRECT_URI = 'http://47.99.46.80/wx/get-code';
+    const REDIRECT_URI = 'http://120.55.112.76/wx/get-code';
     const APP_ID = 'wx8d771bff3c8c1eaf';
     const APP_SECRET = '0336ad17025337ad17193f079d6da8e8';
 
@@ -48,8 +48,28 @@ class YunController extends Controller
 
 
 //    public function generateCertificate(){
-    public function actionIndexx(){
+    public function actionIndexx($token = null){
 
+        if(!$token){
+            $this->redirect('/wx/premit-wx');
+        }
+        $this->layout= 'main1';
+
+        //获取基本access_token签名
+        $access_token = Curl::httpGet("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".self::APP_ID."&secret=".self::APP_SECRET,true);
+        $access_token = json_decode($access_token,true);
+        $res = Curl::httpGet("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token={$access_token['access_token']}&type=jsapi",true);
+        $ticket = json_decode($res,true);
+
+        $noncestr = 'Wm3WZYTPz0wzccnW';
+        $jsapi_ticket = $ticket['ticket'];
+        $timestamp = time();
+        $url = 'http://'.$_SERVER['SERVER_NAME'].$_SERVER["REQUEST_URI"];
+
+        $str = "jsapi_ticket={$jsapi_ticket}&noncestr={$noncestr}&timestamp={$timestamp}&url={$url}";
+        $str_sha1 = sha1($str);
+        $share_title = "2020新年新运势，快来测测吧";
+        $share_img = "http://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIYAEcqeJicLMH67P1Jibu3TKWIqyW6OGNHoicywiaciccLL9roojDVN5wFAd7QBXpntzg0YuAQ4AhoNCg/132";
 
 
         $textOpt = ['color'=>'000','size'=>'25'];
@@ -73,18 +93,18 @@ class YunController extends Controller
         $img->save(Yii::getAlias('@webroot/img/test'.'.jpg'), ['quality' => 100]);
         $this->layout = 'main1';
         return $this->render('show_certificate',[
-//            'share_title' => "2020新年新运势，快来测测吧！！",
-////            'share_img' => ,
+
             'src' => '/img/test'.'.jpg',
-//            'url' =>Yii::$app->request->hostInfo."/index/show-certificate?tradeno={$tradeno}",
-//
-//
-//            'token' => $token,
-//            'app_id' => self::APP_ID,
-//            'timestamp' => $timestamp,
-//            'nonceStr' => $noncestr,
-//            'signature' => $str_sha1,
-//            'jsapi_ticket' => $jsapi_ticket,
+
+
+            'share_title' => $share_title,
+            'share_img' => $share_img,
+            'token' => $token,
+            'app_id' => self::APP_ID,
+            'timestamp' => $timestamp,
+            'nonceStr' => $noncestr,
+            'signature' => $str_sha1,
+            'jsapi_ticket' => $jsapi_ticket,
         ]);
     }
 

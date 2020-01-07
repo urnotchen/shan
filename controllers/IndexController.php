@@ -19,7 +19,7 @@ use Da\QrCode\QrCode;
 class IndexController extends Controller
 {
     const SCOPE = 'snsapi_userinfo';
-    const REDIRECT_URI = 'http://47.99.46.80/wx/get-code';
+    const REDIRECT_URI = 'http://120.55.112.76/wx/get-code';
     const APP_ID = 'wx8d771bff3c8c1eaf';
     const APP_SECRET = '0336ad17025337ad17193f079d6da8e8';
 
